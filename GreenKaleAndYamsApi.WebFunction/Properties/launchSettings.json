@@ -1,0 +1,9 @@
+{
+	"profiles": {
+		"GreenKaleAndYamsApi.WebFunction": {
+			"commandName": "Project",
+			"commandLineArgs": "--port 7320",
+			"launchBrowser": false
+		}
+	}
+}
