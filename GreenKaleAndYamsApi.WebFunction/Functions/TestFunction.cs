@@ -9,7 +9,9 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 namespace GreenKaleAndYamsApi.WebFunction.Functions {
+
 	public static class TestFunction {
+
 		[FunctionName("OnlyGet")]
 		public static IActionResult OnlyGet(
 			[HttpTrigger(AuthorizationLevel.Function, "get", Route = "Function")] HttpRequest req,
@@ -22,7 +24,7 @@ namespace GreenKaleAndYamsApi.WebFunction.Functions {
 
 			string method = req.Method;
 
-			string responseMessage = $"OnlyGet :: {method} :: name = {name}";
+			string responseMessage = $"OnlyGet\nmethod       = {method}\nname         = {name}";
 
 			return new OkObjectResult(responseMessage);
 		}
@@ -44,17 +46,22 @@ namespace GreenKaleAndYamsApi.WebFunction.Functions {
 
 			string method = req.Method;
 
-			string responseMessage = $"OnlyPost :: {method} :: name = {name} :: nameBody = {nameBody}";
+			string responseMessage = $"OnlyPost\nmethod       = {method}\nname         = {name}\nname in body = {nameBody}";
 
 			return new OkObjectResult(responseMessage);
 		}
+		public class BodyClass {
+			public string Name { get; set; }
+			public string FullName { get; set; }
+			public int Num { get; set; }
+		}
 
-		[FunctionName("FunctionParam")]
-		public static async Task<IActionResult> FunctionParam(
-			[HttpTrigger(AuthorizationLevel.Function, "get", "post", "put", "delete", Route = null)] HttpRequest req,
+		[FunctionName("FunctionCombined")]
+		public static async Task<IActionResult> Function(
+			[HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
 			ILogger log
 		) {
-			log.LogInformation("C# HTTP trigger FunctionParam");
+			log.LogInformation("C# HTTP trigger Function Combined");
 
 			string name = req.Query["name"];
 			name = string.IsNullOrWhiteSpace(name) ? null : name;
@@ -66,30 +73,32 @@ namespace GreenKaleAndYamsApi.WebFunction.Functions {
 
 			string method = req.Method;
 
-			string responseMessage = $"FunctionParam :: {method} :: name = {name} :: nameBody = {nameBody}";
+			string responseMessage = $"Function Combined\nmethod       = {method}\nname         = {name}\nname in body = {nameBody}";
 
 			return new OkObjectResult(responseMessage);
 		}
 
 		[FunctionName("FunctionUrlParam")]
 		public static async Task<IActionResult> FunctionUrlParam(
-			[HttpTrigger(AuthorizationLevel.Function, "get", "post", "put", "delete", Route = "FunctionUrlParam/{id}")] HttpRequest req,
-			int id,
+			[HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = "Function/{id}")]
+			[FromBody] BodyClass body,
+			HttpRequest req,
+			[FromRoute] int id,
+			[FromQuery] string name,
 			ILogger log
 		) {
-			log.LogInformation("C# HTTP trigger FunctionUrlParam");
+			log.LogInformation("C# HTTP trigger Function with URL params");
 
-			string name = req.Query["name"];
 			name = string.IsNullOrWhiteSpace(name) ? "null" : name;
 
 			string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
 			dynamic data = JsonConvert.DeserializeObject(requestBody);
-			string nameBody = data?.name;
+			string nameBody = body.FullName;
 			nameBody = string.IsNullOrWhiteSpace(nameBody) ? "null" : nameBody;
 
 			string method = req.Method;
-
-			string responseMessage = $"FunctionUrlParam :: {method} :: name = {name} :: nameBody = {nameBody}";
+			
+			string responseMessage = $"Function with URL params\nmethod      {id} = {method}\nname         = {name}\nname in body = {nameBody}\nnum in body  ={body.Num}";
 
 			return new OkObjectResult(responseMessage);
 		}

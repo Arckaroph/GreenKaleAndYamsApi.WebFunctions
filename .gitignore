@@ -1,2 +1,4 @@
 .vs/
 *.local.json
+*/bin/*
+*/obj/*
