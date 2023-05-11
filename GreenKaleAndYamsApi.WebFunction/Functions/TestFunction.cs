@@ -10,10 +10,10 @@ using Newtonsoft.Json;
 
 namespace GreenKaleAndYamsApi.WebFunction.Functions {
 
-	public static class TestFunction {
+	public class TestFunction {
 
 		[FunctionName("OnlyGet")]
-		public static IActionResult OnlyGet(
+		public IActionResult OnlyGet(
 			[HttpTrigger(AuthorizationLevel.Function, "get", Route = "Function")] HttpRequest req,
 			ILogger log
 		) {
@@ -30,7 +30,7 @@ namespace GreenKaleAndYamsApi.WebFunction.Functions {
 		}
 
 		[FunctionName("OnlyPost")]
-		public static async Task<IActionResult> OnlyPost(
+		public async Task<IActionResult> OnlyPost(
 			[HttpTrigger(AuthorizationLevel.Function, "post", Route = "Function")] HttpRequest req,
 			ILogger log
 		) {
@@ -57,7 +57,7 @@ namespace GreenKaleAndYamsApi.WebFunction.Functions {
 		}
 
 		[FunctionName("FunctionCombined")]
-		public static async Task<IActionResult> Function(
+		public async Task<IActionResult> Function(
 			[HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
 			ILogger log
 		) {
@@ -79,7 +79,7 @@ namespace GreenKaleAndYamsApi.WebFunction.Functions {
 		}
 
 		[FunctionName("FunctionUrlParam")]
-		public static async Task<IActionResult> FunctionUrlParam(
+		public async Task<IActionResult> FunctionUrlParam(
 			[HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = "Function/{id}")]
 			[FromBody] BodyClass body,
 			HttpRequest req,
