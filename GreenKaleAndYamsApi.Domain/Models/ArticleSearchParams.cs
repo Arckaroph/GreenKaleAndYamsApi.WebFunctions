@@ -1,4 +1,4 @@
-﻿namespace GreenKaleAndYamsApi.WebFunction.Services {
+﻿namespace GreenKaleAndYamsApi.Domain.Models {
 	public class ArticleSearchParams {
 		public string Query { get; set; }
 		public int Page { get; set; } = 1;

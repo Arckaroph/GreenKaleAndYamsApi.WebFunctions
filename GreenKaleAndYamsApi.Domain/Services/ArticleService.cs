@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using GreenKaleAndYamsApi.Domain.Models;
 
-namespace GreenKaleAndYamsApi.WebFunction.Services {
+namespace GreenKaleAndYamsApi.Domain.Services {
 	public class ArticleService {
 		public class Data {
 			public List<Article> Articles { get; set; }
@@ -45,7 +46,7 @@ namespace GreenKaleAndYamsApi.WebFunction.Services {
 		public PagedResult<Article> SearchArticlesAsync(ArticleSearchParams param) {
 			PagedResult<Article> result = new PagedResult<Article>() {
 				Results = database.Articles,
-				TotalResults = 0,
+				TotalResults = database.Articles.Count,
 				TotalPages = 1,
 				Page = param.Page,
 			};

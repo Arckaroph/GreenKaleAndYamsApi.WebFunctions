@@ -1,6 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using GreenKaleAndYamsApi.WebFunction.Services;
+using GreenKaleAndYamsApi.Domain.Models;
 
 namespace GreenKaleAndYamsApi.WebFunction.Models {
 	public class ArticleWebModel {

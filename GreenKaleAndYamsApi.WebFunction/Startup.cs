@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.Contracts;
 using System.IO;
-using GreenKaleAndYamsApi.WebFunction.Services;
+using GreenKaleAndYamsApi.Domain.Services;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

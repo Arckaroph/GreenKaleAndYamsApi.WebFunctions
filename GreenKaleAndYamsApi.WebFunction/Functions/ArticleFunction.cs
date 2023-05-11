@@ -1,9 +1,9 @@
 using System;
 using System.Linq;
-using System.Collections.Generic;
 using System.Threading.Tasks;
+using GreenKaleAndYamsApi.Domain.Models;
+using GreenKaleAndYamsApi.Domain.Services;
 using GreenKaleAndYamsApi.WebFunction.Models;
-using GreenKaleAndYamsApi.WebFunction.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;

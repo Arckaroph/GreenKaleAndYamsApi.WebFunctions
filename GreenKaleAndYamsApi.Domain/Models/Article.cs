@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GreenKaleAndYamsApi.WebFunction.Services {
+namespace GreenKaleAndYamsApi.Domain.Models {
 	public class Article {
 		public int Id { get; set; }
 

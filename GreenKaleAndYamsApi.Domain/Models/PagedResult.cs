@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace GreenKaleAndYamsApi.WebFunction.Services {
+namespace GreenKaleAndYamsApi.Domain.Models {
 	public class PagedResult<T> {
 		public List<T> Results { get; set; }
 		public int TotalResults { get; set; }
