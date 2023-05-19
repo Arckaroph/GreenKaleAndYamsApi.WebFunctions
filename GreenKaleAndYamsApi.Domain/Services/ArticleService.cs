@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using GreenKaleAndYamsApi.Domain.Models;
 
 namespace GreenKaleAndYamsApi.Domain.Services {
-	public class ArticleService {
+	public class ArticleService : IArticleService {
 		public class Data {
 			public List<Article> Articles { get; set; }
 		}

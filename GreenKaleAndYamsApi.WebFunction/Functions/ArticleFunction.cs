@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using GreenKaleAndYamsApi.Domain.Models;
 using GreenKaleAndYamsApi.Domain.Services;
@@ -10,21 +11,26 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 
+[assembly: InternalsVisibleTo("GreenKaleAndYamsApi.WebFunction.Tests")]
+
 namespace GreenKaleAndYamsApi.WebFunction.Functions {
 	public class ArticleFunction {
-		private readonly ArticleService articleService;
+		private readonly IArticleService articleService;
+		//private readonly ILogger<ArticleFunction> logger;
 
 		public ArticleFunction(
-			ArticleService articleService
+			IArticleService articleService
+			//ILogger<ArticleFunction> logger
 		) {
 			this.articleService = articleService;
+			//this.logger = logger;
 		}
 
 		internal bool IsInvalidArticle(ArticleWebModel model) {
 			return model == null
+				|| model.Id == null || model.Id == Guid.Empty
 				|| string.IsNullOrWhiteSpace(model.Title)
-				|| string.IsNullOrWhiteSpace(model.Body)
-				|| model.Id == null || model.Id == Guid.Empty;
+				|| string.IsNullOrWhiteSpace(model.Body);
 		}
 
 		[FunctionName("ArticleGet")]
@@ -38,7 +44,8 @@ namespace GreenKaleAndYamsApi.WebFunction.Functions {
 
 			if (id == Guid.Empty) {
 				// throw new ArgumentInvalidException() // TODO: implement
-				throw new Exception("Required argument value is null or empty");
+				//throw new Exception("Required argument value is null or empty");
+				return new BadRequestResult();
 			}
 
 			Article article = articleService.GetArticleAsync(id);
@@ -60,7 +67,8 @@ namespace GreenKaleAndYamsApi.WebFunction.Functions {
 
 			if (string.IsNullOrWhiteSpace(param.Query)) {
 				// throw new ArgumentInvalidException() // TODO: implement
-				throw new Exception("Required argument value is null or empty");
+				//throw new Exception("Required argument value is null or empty");
+				return new BadRequestResult();
 			}
 			if (param.Page < 1) {
 				param.Page = 1;
@@ -89,14 +97,15 @@ namespace GreenKaleAndYamsApi.WebFunction.Functions {
 
 			if (IsInvalidArticle(webModel)) {
 				// throw new ArgumentInvalidException() // TODO: implement
-				throw new Exception("Required argument value is null or empty");
+				//throw new Exception("Required argument value is null or empty");
+				return new BadRequestResult();
 			}
 
 			Article article = articleService.AddArticleAsync(webModel.ToModel());
 			//Article article = await articleService.AddArticleAsync(webModel.ToModel()).ConfigureAwait(false);
 			ArticleWebModel response = new ArticleWebModel(article);
 
-			return new OkObjectResult(response);
+			return new CreatedResult($"/article/{response.Id.Value}", response);
 		}
 
 		[FunctionName("ArticleUpdate")]
@@ -114,11 +123,13 @@ namespace GreenKaleAndYamsApi.WebFunction.Functions {
 
 			if (IsInvalidArticle(webModel)) {
 				// throw new ArgumentInvalidException() // TODO: implement
-				throw new Exception("Required argument value is null or empty");
+				//throw new Exception("Required argument value is null or empty");
+				return new BadRequestResult();
 			}
 			if (webModel.Id != id) {
 				// throw new ArgumentInvalidException() // TODO: implement
-				throw new Exception("Ids do not match");
+				//throw new Exception("Ids do not match");
+				return new BadRequestResult();
 			}
 
 			Article article = articleService.UpdateArticleAsync(webModel.ToModel());
@@ -139,7 +150,8 @@ namespace GreenKaleAndYamsApi.WebFunction.Functions {
 
 			if (id == Guid.Empty) {
 				// throw new ArgumentInvalidException() // TODO: implement
-				throw new Exception("Required argument value is null or empty");
+				//throw new Exception("Required argument value is null or empty");
+				return new BadRequestResult();
 			}
 
 			articleService.DeleteArticleAsync(id);

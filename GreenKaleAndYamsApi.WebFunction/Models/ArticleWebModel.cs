@@ -15,6 +15,9 @@ namespace GreenKaleAndYamsApi.WebFunction.Models {
 		public ArticleWebModel() { }
 
 		public ArticleWebModel(Article model) {
+			if (model == null) {
+				return;
+			}
 			Id = model.ResourceId;
 			Title = model.Title;
 			Body = model.Body;

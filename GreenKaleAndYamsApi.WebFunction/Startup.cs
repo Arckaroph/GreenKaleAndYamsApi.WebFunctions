@@ -17,7 +17,7 @@ namespace GreenKaleAndYamsApi.WebFunction {
 
 			var configuration = configBuilder.Build();
 
-			builder.Services.AddTransient<ArticleService>();
+			builder.Services.AddTransient<IArticleService, ArticleService>();
 		}
 	}
 }
