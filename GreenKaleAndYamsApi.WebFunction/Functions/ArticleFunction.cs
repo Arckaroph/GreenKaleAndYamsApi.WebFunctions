@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using GreenKaleAndYamsApi.DataEntities;
 using GreenKaleAndYamsApi.Domain.Models;
 using GreenKaleAndYamsApi.Domain.Services;
 using GreenKaleAndYamsApi.WebFunction.Models;
@@ -48,9 +49,8 @@ namespace GreenKaleAndYamsApi.WebFunction.Functions {
 				return new BadRequestResult();
 			}
 
-			Article article = articleService.GetArticleAsync(id);
+			Article article = await articleService.GetArticleAsync(id).ConfigureAwait(false);
 			ArticleWebModel response = new ArticleWebModel(article);
-			//Article article = await articleService.GetArticleAsync(id).ConfigureAwait(false);
 
 			return new OkObjectResult(response);
 		}
@@ -74,8 +74,7 @@ namespace GreenKaleAndYamsApi.WebFunction.Functions {
 				param.Page = 1;
 			}
 
-			PagedResult<Article> results = articleService.SearchArticlesAsync(param);
-			////PagedResult<Article> results = await articleService.SearchArticlesAsync(param).ConfigureAwait(false);
+			PagedResult<Article> results = await articleService.SearchArticlesAsync(param).ConfigureAwait(false);
 			PagedResult<ArticleWebModel> response = new PagedResult<ArticleWebModel>() {
 				Results = results.Results.Select(x => new ArticleWebModel(x)).ToList(),
 				TotalResults = results.TotalResults,
@@ -101,8 +100,7 @@ namespace GreenKaleAndYamsApi.WebFunction.Functions {
 				return new BadRequestResult();
 			}
 
-			Article article = articleService.AddArticleAsync(webModel.ToModel());
-			//Article article = await articleService.AddArticleAsync(webModel.ToModel()).ConfigureAwait(false);
+			Article article = await articleService.AddArticleAsync(webModel.ToModel()).ConfigureAwait(false);
 			ArticleWebModel response = new ArticleWebModel(article);
 
 			return new CreatedResult($"/article/{response.Id.Value}", response);
@@ -132,8 +130,7 @@ namespace GreenKaleAndYamsApi.WebFunction.Functions {
 				return new BadRequestResult();
 			}
 
-			Article article = articleService.UpdateArticleAsync(webModel.ToModel());
-			//Article article = await articleService.UpdateArticleAsync(webModel.ToModel()).ConfigureAwait(false);
+			Article article = await articleService.UpdateArticleAsync(webModel.ToModel()).ConfigureAwait(false);
 			ArticleWebModel response = new ArticleWebModel(article);
 
 			return new OkObjectResult(response);
@@ -154,8 +151,7 @@ namespace GreenKaleAndYamsApi.WebFunction.Functions {
 				return new BadRequestResult();
 			}
 
-			articleService.DeleteArticleAsync(id);
-			//await articleService.DeleteArticleAsync(id).ConfigureAwait(false);
+			await articleService.DeleteArticleAsync(id).ConfigureAwait(false);
 			return new NoContentResult();
 		}
 	}

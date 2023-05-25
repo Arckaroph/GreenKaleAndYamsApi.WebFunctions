@@ -19,6 +19,7 @@ namespace GreenKaleAndYamsApi.TestUtilities.ModelGenerators {
 				Query = RandomValues.GetSentence(2),
 				Page = RandomValues.GetInt(1, 3),
 				IncludeUnpublished = false,
+				IncludeDeleted = false,
 			};
 		}
 	}

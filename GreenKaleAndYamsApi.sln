@@ -7,9 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenKaleAndYamsApi.WebFunc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenKaleAndYamsApi.Domain", "GreenKaleAndYamsApi.Domain\GreenKaleAndYamsApi.Domain.csproj", "{F398072B-A1E4-4FB4-A878-A9D32D9550AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreenKaleAndYamsApi.TestUtilities", "GreenKaleAndYamsApi.TestUtilities\GreenKaleAndYamsApi.TestUtilities.csproj", "{B05313A3-612A-4B3D-8B46-0509F9AE4DCE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenKaleAndYamsApi.TestUtilities", "GreenKaleAndYamsApi.TestUtilities\GreenKaleAndYamsApi.TestUtilities.csproj", "{B05313A3-612A-4B3D-8B46-0509F9AE4DCE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreenKaleAndYamsApi.WebFunction.Tests", "GreenKaleAndYamsApi.WebFunction.Tests\GreenKaleAndYamsApi.WebFunction.Tests.csproj", "{05BC0DB2-5326-4627-AAA5-03CBCF0B6A55}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenKaleAndYamsApi.WebFunction.Tests", "GreenKaleAndYamsApi.WebFunction.Tests\GreenKaleAndYamsApi.WebFunction.Tests.csproj", "{05BC0DB2-5326-4627-AAA5-03CBCF0B6A55}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenKaleAndYamsApi.Data", "GreenKaleAndYamsApi.Data\GreenKaleAndYamsApi.Data.csproj", "{1339C412-F2AC-4907-869A-A71C6D9223D0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenKaleAndYamsApi.DataEntities", "GreenKaleAndYamsApi.DataEntities\GreenKaleAndYamsApi.DataEntities.csproj", "{1C8C59C4-D623-464F-BF32-E61C239BE980}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +37,14 @@ Global
 		{05BC0DB2-5326-4627-AAA5-03CBCF0B6A55}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05BC0DB2-5326-4627-AAA5-03CBCF0B6A55}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05BC0DB2-5326-4627-AAA5-03CBCF0B6A55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1339C412-F2AC-4907-869A-A71C6D9223D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1339C412-F2AC-4907-869A-A71C6D9223D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1339C412-F2AC-4907-869A-A71C6D9223D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1339C412-F2AC-4907-869A-A71C6D9223D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C8C59C4-D623-464F-BF32-E61C239BE980}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C8C59C4-D623-464F-BF32-E61C239BE980}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C8C59C4-D623-464F-BF32-E61C239BE980}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C8C59C4-D623-464F-BF32-E61C239BE980}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

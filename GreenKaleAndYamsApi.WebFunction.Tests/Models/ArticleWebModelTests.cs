@@ -1,4 +1,4 @@
-﻿using GreenKaleAndYamsApi.Domain.Models;
+﻿using GreenKaleAndYamsApi.DataEntities;
 using GreenKaleAndYamsApi.TestUtilities.ModelGenerators;
 using GreenKaleAndYamsApi.WebFunction.Models;
 
@@ -10,27 +10,38 @@ namespace GreenKaleAndYamsApi.WebFunction.Tests.Models {
 			Article entity = EntityGenerator.Default_Article();
 
 			// Act
-			ArticleWebModel model = new ArticleWebModel(entity);
+			ArticleWebModel result = new ArticleWebModel(entity);
 
 			// Assert
-			model.Should().BeEquivalentTo(entity, options => options
+			result.Should().BeEquivalentTo(entity, options => options
 				.WithMapping<ArticleWebModel>(src => src.ResourceId, dest => dest.Id)
 				.Excluding(src => src.DateDeleted)
 				.Excluding(src => src.Id)
 			);
+		}
 
+		[Fact]
+		public void ConstructorWithNullEntity() {
+			// Arrange
+			ArticleWebModel webModel = new ArticleWebModel();
+
+			// Act
+			ArticleWebModel result = new ArticleWebModel(null);
+
+			// Assert
+			result.Should().BeEquivalentTo(webModel);
 		}
 
 		[Fact]
 		public void ToModelTests() {
 			// Arrange
-			ArticleWebModel model = WebModelGenerator.Default_ArticleWebModel();
+			ArticleWebModel webModel = WebModelGenerator.Default_ArticleWebModel();
 
 			// Act
-			Article entity = model.ToModel();
+			Article result = webModel.ToModel();
 
 			// Assert
-			entity.Should().BeEquivalentTo(model, options => options
+			result.Should().BeEquivalentTo(webModel, options => options
 				.WithMapping<Article>(src => src.Id, dest => dest.ResourceId)
 			);
 		}

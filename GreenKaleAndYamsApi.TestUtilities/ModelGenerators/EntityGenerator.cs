@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using GreenKaleAndYamsApi.DataEntities;
 using GreenKaleAndYamsApi.Domain.Models;
 
 namespace GreenKaleAndYamsApi.TestUtilities.ModelGenerators {

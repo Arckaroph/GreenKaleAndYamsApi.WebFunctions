@@ -1,60 +1,116 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using GreenKaleAndYamsApi.Data;
+using GreenKaleAndYamsApi.DataEntities;
 using GreenKaleAndYamsApi.Domain.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace GreenKaleAndYamsApi.Domain.Services {
 	public class ArticleService : IArticleService {
-		public class Data {
-			public List<Article> Articles { get; set; }
+		private readonly DatabaseContext databaseContext;
+
+		public ArticleService(
+			DatabaseContext databaseContext
+		) {
+			this.databaseContext = databaseContext;
 		}
 
-		private readonly Data database = new Data() {
-			Articles = new List<Article> {
-				new Article() {
-					Title = "Article Title",
-					Body = "asdf dfk eka fid fieek dk",
-					Id = 1,
-					ResourceId = new Guid("e072505d-244e-4fe6-9572-7bef516d86aa"),
-					DatePublished = DateTime.Now,
-				}
-			}
-		};
-
-		public ArticleService() {
+		public Task<Article> GetArticleAsync(Guid id) {
+			return databaseContext.Articles
+				.AsNoTracking()
+				.FirstOrDefaultAsync(x => x.ResourceId == id);
 		}
 
-		public Article GetArticleAsync(Guid id) {
-			return database.Articles
-				.FirstOrDefault(x => x.ResourceId == id);
-		}
-
-		public Article AddArticleAsync(Article model) {
-			database.Articles.Add(model);
+		public async Task<Article> AddArticleAsync(Article model) {
+			var workEntity = await databaseContext.Articles
+				.AddAsync(model).ConfigureAwait(false);
+			await databaseContext.SaveChangesAsync().ConfigureAwait(false);
+			model.Id = workEntity.Entity.Id;
 			return model;
 		}
 
-		public Article UpdateArticleAsync(Article model) {
-			Article entity = database.Articles
-				.FirstOrDefault(x => x.ResourceId == model.ResourceId);
-			entity.Title = model.Title;
-			entity.Body = model.Body;
-			entity.DatePublished = model.DatePublished;
+		public async Task<Article> UpdateArticleAsync(Article model) {
+			Article entity = await databaseContext.Articles
+				//.Include(x => x.Author)
+				.FirstOrDefaultAsync(x => x.ResourceId == model.ResourceId).ConfigureAwait(false);
+			if (entity == null) {
+				//throw new NotFoundException(); // TODO: implement
+				throw new Exception("Not Found Exception");
+			}
+
+			if (!string.IsNullOrWhiteSpace(model.Title)) {
+				entity.Title = model.Title;
+			}
+			if (!string.IsNullOrWhiteSpace(model.Body)) {
+				entity.Body = model.Body;
+			}
+			//if (model.Author != null && model.Author.Id != entity.Author.Id) {
+			//	Subject author = await databaseContext.Subjects
+			//		.FirstOrDefaultAsync(x => x.SubjectId == model.Author.SubjectId).ConfigureAwait(false);
+			//	if (author == null) {
+			//		//throw new NotFoundException(); // TODO: implement
+			//		throw new Exception("Not Found Exception");
+			//	}
+			//	entity.Author = author;
+			//}
+			if (model.DatePublished != null) {
+				entity.DatePublished = model.DatePublished;
+			}
+			if (model.DateDeleted == null) {
+				entity.DateDeleted = model.DateDeleted;
+			}
+
+			await databaseContext.SaveChangesAsync().ConfigureAwait(false);
 			return entity;
 		}
 
-		public PagedResult<Article> SearchArticlesAsync(ArticleSearchParams param) {
+		public async Task<PagedResult<Article>> SearchArticlesAsync(ArticleSearchParams param) {
+			IQueryable<Article> query = databaseContext.Articles;
+
+			if (!param.IncludeDeleted) {
+				query = query.Where(x => x.DateDeleted == null);
+			}
+			if (!param.IncludeUnpublished) {
+				query = query.Where(x => x.DatePublished < DateTime.Now);
+			}
+			if (!string.IsNullOrWhiteSpace(param.Query)) {
+				param.Query = param.Query.Trim();
+				//param.Query = param.Query.Replace(" ", " OR ");
+				//query = query.Where(x => EF.Functions.Contains(x.Title, $"\"{param.Query}\"") || EF.Functions.Contains(x.Body, $"\"{param.Query}\""));
+				query = query.Where(x => x.Title.Contains(param.Query) || x.Body.Contains(param.Query));
+			}
+
+			int totalResults = await query
+				.CountAsync().ConfigureAwait(false);
+
+			int resultsPerPage = 10; // TODO: to appsettings.json
+			List<Article> articles = await query
+				.Skip(resultsPerPage * (param.Page - 1))
+				.Take(resultsPerPage)
+				.AsNoTracking()
+				.ToListAsync().ConfigureAwait(false);
+
 			PagedResult<Article> result = new PagedResult<Article>() {
-				Results = database.Articles,
-				TotalResults = database.Articles.Count,
-				TotalPages = 1,
+				Results = articles,
+				TotalResults = totalResults,
+				TotalPages = (int)Math.Ceiling(totalResults / (double)resultsPerPage),
 				Page = param.Page,
 			};
 
 			return result;
 		}
 
-		public void DeleteArticleAsync(Guid id) {
+		public async Task DeleteArticleAsync(Guid id) {
+			Article entity = await databaseContext.Articles
+				.FirstOrDefaultAsync(x => x.ResourceId == id).ConfigureAwait(false);
+			if (entity == null) {
+				return; // TODO: exception not found message
+			}
+
+			entity.DateDeleted = DateTime.Now;
+			await databaseContext.SaveChangesAsync().ConfigureAwait(false);
 		}
 	}
 }

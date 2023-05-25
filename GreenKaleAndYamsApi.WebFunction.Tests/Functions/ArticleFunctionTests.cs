@@ -1,4 +1,5 @@
-﻿using GreenKaleAndYamsApi.Domain.Models;
+﻿using GreenKaleAndYamsApi.DataEntities;
+using GreenKaleAndYamsApi.Domain.Models;
 using GreenKaleAndYamsApi.TestUtilities.ModelGenerators;
 using GreenKaleAndYamsApi.TestUtilities.ServiceMockers;
 using GreenKaleAndYamsApi.WebFunction.Functions;
@@ -127,6 +128,23 @@ namespace GreenKaleAndYamsApi.WebFunction.Tests.Functions {
 		}
 
 		[Fact]
+		public async Task Search_InvalidQueryTest() {
+			// Arrange
+			DefaultHttpRequest request = new DefaultHttpRequest(new DefaultHttpContext()) {
+				Method = "GET",
+			};
+			ArticleSearchParams searchParams = WebModelGenerator.Default_ArticleSearchParams();
+			searchParams.Query = " ";
+
+			// Act
+			IActionResult response = await articleFunction.Search(searchParams, request, searchParams.Query, loggerMocker.Mock.Object).ConfigureAwait(false);
+
+			// Assert
+			response.Should().BeAssignableTo<BadRequestResult>();
+			articleServiceMocker.VerifyNoCall_SearchArticlesAsync();
+		}
+
+		[Fact]
 		public async Task Add_SuccessTest() {
 			// Arrange
 			DefaultHttpRequest request = new DefaultHttpRequest(new DefaultHttpContext()) {
@@ -178,8 +196,8 @@ namespace GreenKaleAndYamsApi.WebFunction.Tests.Functions {
 			IActionResult response = await articleFunction.Update(webModel, request, webModel.Id, loggerMocker.Mock.Object).ConfigureAwait(false);
 
 			// Assert
-			response.Should().BeAssignableTo<OkObjectResult>();
 			response.Should().NotBeNull();
+			response.Should().BeAssignableTo<OkObjectResult>();
 			OkObjectResult result = response as OkObjectResult;
 			result.Should().NotBeNull();
 			result.Value.Should().BeAssignableTo<ArticleWebModel>();

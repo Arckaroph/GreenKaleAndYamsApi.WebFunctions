@@ -5,10 +5,16 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.1.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.16" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.16">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="4.2.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\GreenKaleAndYamsApi.DataEntities\GreenKaleAndYamsApi.DataEntities.csproj" />
+    <ProjectReference Include="..\GreenKaleAndYamsApi.Data\GreenKaleAndYamsApi.Data.csproj" />
     <ProjectReference Include="..\GreenKaleAndYamsApi.Domain\GreenKaleAndYamsApi.Domain.csproj" />
   </ItemGroup>
   <ItemGroup>
