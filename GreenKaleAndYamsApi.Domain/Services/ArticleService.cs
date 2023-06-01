@@ -6,6 +6,7 @@ using GreenKaleAndYamsApi.Data;
 using GreenKaleAndYamsApi.DataEntities;
 using GreenKaleAndYamsApi.Domain.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace GreenKaleAndYamsApi.Domain.Services {
 	public class ArticleService : IArticleService {
@@ -106,7 +107,7 @@ namespace GreenKaleAndYamsApi.Domain.Services {
 			Article entity = await databaseContext.Articles
 				.FirstOrDefaultAsync(x => x.ResourceId == id).ConfigureAwait(false);
 			if (entity == null) {
-				return; // TODO: exception not found message
+				throw new Exception("Not Found Exception"); // TODO: exception not found message
 			}
 
 			entity.DateDeleted = DateTime.Now;

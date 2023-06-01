@@ -76,7 +76,7 @@ namespace GreenKaleAndYamsApi.WebFunction.Functions {
 
 			PagedResult<Article> results = await articleService.SearchArticlesAsync(param).ConfigureAwait(false);
 			PagedResult<ArticleWebModel> response = new PagedResult<ArticleWebModel>() {
-				Results = results.Results.Select(x => new ArticleWebModel(x)).ToList(),
+				Results = results.Results?.Select(x => new ArticleWebModel(x)).ToList(),
 				TotalResults = results.TotalResults,
 				TotalPages = results.TotalPages,
 				Page = results.Page,

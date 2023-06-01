@@ -11,21 +11,25 @@ namespace GreenKaleAndYamsApi.TestUtilities.ModelGenerators {
 				ResourceId = id ?? RandomValues.GetGuid(),
 				Title = RandomValues.GetSentence(3),
 				Body = RandomValues.GetSentence(25),
-				DatePublished = RandomValues.GetDate(new DateTime(2010, 1, 1)),
+				DatePublished = RandomValues.GetDate(new DateTime(2010, 1, 1), DateTime.Now.AddDays(-1)),
 			};
+		}
+		public static List<Article> Default_Articles(int count = 3) {
+			List<Article> articles = new List<Article>(count * 3);
+			for (int i = 0; i < count; i++) {
+				articles.Add(Default_Article());
+			}
+			return articles;
 		}
 
 		public static PagedResult<Article> Default_PagedResultArticle(int count = 3) {
 			int totalPages = RandomValues.GetInt(3, 6);
 			PagedResult<Article> pagedArticles = new PagedResult<Article>() {
-				Results = new List<Article>(count * 3),
+				Results = Default_Articles(count),
 				Page = RandomValues.GetInt(1, totalPages),
 				TotalPages = totalPages,
 				TotalResults = totalPages * count,
 			};
-			for (int i = 0; i < count; i++) {
-				pagedArticles.Results.Add(Default_Article());
-			}
 			return pagedArticles;
 		}
 	}
