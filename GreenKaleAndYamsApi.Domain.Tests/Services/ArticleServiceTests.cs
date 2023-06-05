@@ -120,7 +120,7 @@ namespace GreenKaleAndYamsApi.Domain.Tests.Services {
 			}
 			ArticleSearchParams param = WebModelGenerator.Default_ArticleSearchParams();
 			param.Page = 1;
-			param.Query = null;
+			param.SearchText = null;
 
 			// Act
 			var response = await articleService.SearchArticlesAsync(param).ConfigureAwait(false);
@@ -136,7 +136,7 @@ namespace GreenKaleAndYamsApi.Domain.Tests.Services {
 			databaseMocker.DatabaseContext.Database.EnsureCreated();
 			ArticleSearchParams param = WebModelGenerator.Default_ArticleSearchParams();
 			param.Page = 1;
-			param.Query = null;
+			param.SearchText = null;
 			param.IncludeDeleted = true;
 
 			// Act
@@ -155,7 +155,7 @@ namespace GreenKaleAndYamsApi.Domain.Tests.Services {
 			}
 			ArticleSearchParams param = WebModelGenerator.Default_ArticleSearchParams();
 			param.Page = 1;
-			param.Query = null;
+			param.SearchText = null;
 			param.IncludeUnpublished = true;
 
 			// Act

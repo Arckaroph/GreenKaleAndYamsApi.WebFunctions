@@ -6,7 +6,6 @@ using GreenKaleAndYamsApi.Data;
 using GreenKaleAndYamsApi.DataEntities;
 using GreenKaleAndYamsApi.Domain.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace GreenKaleAndYamsApi.Domain.Services {
 	public class ArticleService : IArticleService {
@@ -76,11 +75,11 @@ namespace GreenKaleAndYamsApi.Domain.Services {
 			if (!param.IncludeUnpublished) {
 				query = query.Where(x => x.DatePublished < DateTime.Now);
 			}
-			if (!string.IsNullOrWhiteSpace(param.Query)) {
-				param.Query = param.Query.Trim();
-				//param.Query = param.Query.Replace(" ", " OR ");
-				//query = query.Where(x => EF.Functions.Contains(x.Title, $"\"{param.Query}\"") || EF.Functions.Contains(x.Body, $"\"{param.Query}\""));
-				query = query.Where(x => x.Title.Contains(param.Query) || x.Body.Contains(param.Query));
+			if (!string.IsNullOrWhiteSpace(param.SearchText)) {
+				param.SearchText = param.SearchText.Trim();
+				//param.SearchText = param.SearchText.Replace(" ", " OR ");
+				//query = query.Where(x => EF.Functions.Contains(x.Title, $"\"{param.SearchText}\"") || EF.Functions.Contains(x.Body, $"\"{param.SearchText}\""));
+				query = query.Where(x => x.Title.Contains(param.SearchText) || x.Body.Contains(param.SearchText));
 			}
 
 			int totalResults = await query

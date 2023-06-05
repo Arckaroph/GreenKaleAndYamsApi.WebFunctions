@@ -16,7 +16,7 @@ namespace GreenKaleAndYamsApi.TestUtilities.ModelGenerators {
 
 		public static ArticleSearchParams Default_ArticleSearchParams() {
 			return new ArticleSearchParams() {
-				Query = RandomValues.GetSentence(2),
+				SearchText = RandomValues.GetSentence(2),
 				Page = RandomValues.GetInt(1, 3),
 				IncludeUnpublished = false,
 				IncludeDeleted = false,

@@ -108,7 +108,7 @@ namespace GreenKaleAndYamsApi.WebFunction.Tests.Functions {
 			ArticleSearchParams searchParams = WebModelGenerator.Default_ArticleSearchParams();
 
 			// Act
-			IActionResult response = await articleFunction.Search(searchParams, request, searchParams.Query, loggerMocker.Mock.Object).ConfigureAwait(false);
+			IActionResult response = await articleFunction.Search(searchParams, request, searchParams.SearchText, loggerMocker.Mock.Object).ConfigureAwait(false);
 
 			// Assert
 			response.Should().BeAssignableTo<OkObjectResult>();
@@ -134,10 +134,10 @@ namespace GreenKaleAndYamsApi.WebFunction.Tests.Functions {
 				Method = "GET",
 			};
 			ArticleSearchParams searchParams = WebModelGenerator.Default_ArticleSearchParams();
-			searchParams.Query = " ";
+			searchParams.SearchText = " ";
 
 			// Act
-			IActionResult response = await articleFunction.Search(searchParams, request, searchParams.Query, loggerMocker.Mock.Object).ConfigureAwait(false);
+			IActionResult response = await articleFunction.Search(searchParams, request, searchParams.SearchText, loggerMocker.Mock.Object).ConfigureAwait(false);
 
 			// Assert
 			response.Should().BeAssignableTo<BadRequestResult>();

@@ -60,16 +60,11 @@ namespace GreenKaleAndYamsApi.WebFunction.Functions {
 			[HttpTrigger(AuthorizationLevel.Function, "get", Route = "Articles")]
 			[FromQuery] ArticleSearchParams param,
 			HttpRequest req,
-			[FromQuery] string query,
+			[FromQuery] string searchText,
 			ILogger log
 		) {
 			log.LogInformation("C# HTTP trigger function processed a request: {Method} in {Service}", req.Method, this.GetType());
 
-			if (string.IsNullOrWhiteSpace(param.Query)) {
-				// throw new ArgumentInvalidException() // TODO: implement
-				//throw new Exception("Required argument value is null or empty");
-				return new BadRequestResult();
-			}
 			if (param.Page < 1) {
 				param.Page = 1;
 			}
